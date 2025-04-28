@@ -6,9 +6,9 @@ metadata:
   labels:
     app: api-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer   
   selector:
     app: api-service
   ports:
-    - port: 80      # Ingress가 접근할 포트
-      targetPort: 5200  # 실제 FastAPI 앱 포트
+    - port: 5200          # 외부에서 접근할 포트
+      targetPort: 5200  # FastAPI 컨테이너가 실제 듣는 포트
