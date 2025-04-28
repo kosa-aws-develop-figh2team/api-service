@@ -25,9 +25,7 @@ class ChatResponse(BaseModel):
     response_text: str
 
 # ✅ 환경 변수에서 API 주소 불러오기
-EMBED_API_HOST = os.getenv("EMBED_API_HOST", "localhost")
-EMBED_API_PORT = os.getenv("EMBED_API_PORT", "5001")
-RAG_API_HOST = os.getenv("RAG_API_HOST", "localhost")
+RAG_API_HOST = os.getenv("RAG_API_HOST", "rag-service")
 RAG_API_PORT = os.getenv("RAG_API_PORT", "5201")  # rag-service가 포트 5201에서 실행 중
 
 # 🔹 질문 등록 + 응답 생성 통합 API
@@ -39,25 +37,9 @@ def submit_and_respond(request: QuestionRequest):
         # ✅ message_id 생성
         message_id = f"msg-{uuid.uuid4()}"
 
-        # ✅ 1. 질문 임베딩 생성
-        embed_url = f"http://{RAG_API_HOST}:{RAG_API_PORT}/rag/embed-question"
-        embed_response = requests.post(embed_url, json={"question_text": request.question_text})
-        if embed_response.status_code != 200:
-            raise HTTPException(status_code=500, detail="임베딩 생성 실패")
-        embedding = embed_response.json().get("embedding_vector")
-
-        # ✅ 2. 유사 문서 검색
-        retrieve_url = f"http://{RAG_API_HOST}:{RAG_API_PORT}/rag/retrieve"
-        retrieve_response = requests.post(retrieve_url, json={"embedding_vector": embedding})
-        if retrieve_response.status_code != 200:
-            raise HTTPException(status_code=500, detail="문서 검색 실패")
-        document_list = retrieve_response.json().get("document_list")
-
-        # ✅ 3. 응답 생성
-        generate_url = f"http://{RAG_API_HOST}:{RAG_API_PORT}/rag/generate"
+        generate_url = f"http://{RAG_API_HOST}:{RAG_API_PORT}/rag/answer"
         generate_response = requests.post(generate_url, json={
             "question_text": request.question_text,
-            "document_list": document_list
         })
         if generate_response.status_code != 200:
             raise HTTPException(status_code=500, detail="응답 생성 실패")

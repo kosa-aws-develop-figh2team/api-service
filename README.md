@@ -7,10 +7,7 @@
 이 서비스는 RAG 기반 시스템의 API Gateway 또는 BFF 역할을 수행하며, 단일 통합 API를 제공합니다:
 
 - **Endpoint**: `POST /chat/question`  
-- **기능 순서**:  
-  1. 질문 임베딩 생성  
-  2. 관련 문서 검색  
-  3. 응답 생성  
+- **기능 **: 채팅 응답 생성  
 - **Request 예시**:
   ```json
   {
@@ -31,11 +28,7 @@
 ```text
 [사용자 질문 수신]
          ↓
-[RAG 서비스에 질문 임베딩 요청]
-         ↓
-[임베딩 결과 기반 유사 문서 검색 요청]
-         ↓
-[질문 + 문서 기반 응답 생성 요청]
+[문서 기반 응답 생성 요청]
          ↓
 [message_id와 함께 응답 반환]
 ```
@@ -55,7 +48,8 @@
   ```json
   {
     "message_id": "msg-abc123-001",
-    "response_text": "서울시 청년 정책은 청년수당, 역세권 청년주택 등이 있습니다."
+    "response_text": "서울시 청년 정책은 청년수당, 역세권 청년주택 등이 있습니다.",
+    "session_id": "abc123"
   }
   ```
 - **Status Codes**:
@@ -83,8 +77,6 @@ docker run --env-file .env -p 5200:5200 api-service
 
 ## 📦 .env 예시
 ```env
-EMBED_API_HOST=embed-service
-EMBED_API_PORT=5001
 RAG_API_HOST=rag-service
 RAG_API_PORT=5201
 ```
@@ -99,4 +91,10 @@ GitHub Actions를 통해 `main` 브랜치에 push 시 AWS ECR로 자동 배포�
 - 멀티턴 챗봇 기능 확장 (세션 기반 맥락 유지)  
 
 ## 📁 디렉토리 구조
-(작성 중)
+```
+.
+├── README.md
+├── dockerfile
+├── main.py
+└── requirements.txt
+```
