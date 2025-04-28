@@ -25,7 +25,7 @@ class ChatResponse(BaseModel):
     response_text: str
 
 # ✅ 환경 변수에서 API 주소 불러오기
-RAG_API_HOST = os.getenv("RAG_API_HOST", "rag-service")
+RAG_API_HOST = os.getenv("RAG_API_HOST", "rag-service.backend.svc.cluster.local")
 RAG_API_PORT = os.getenv("RAG_API_PORT", "5201")  # rag-service가 포트 5201에서 실행 중
 
 # 🔹 질문 등록 + 응답 생성 통합 API
