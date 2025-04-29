@@ -46,7 +46,7 @@ def submit_and_respond(request: QuestionRequest):
             raise HTTPException(status_code=500, detail="응답 생성 실패")
         response_text = generate_response.json().get("response_text")
         raw_service_ids = generate_response.json().get("service_ids")
-        service_ids = list(tuple(raw_service_ids))
+        service_ids = list(set(raw_service_ids))
 
         logger.info(f"응답 생성 완료: message_id={message_id}")
         return {"message_id": message_id, "response_text": response_text, "session_id": request.session_id, "service_ids": service_ids}
