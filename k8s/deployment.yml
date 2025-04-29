@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: api-service
-        image: 687436499847.dkr.ecr.ap-northeast-2.amazonaws.com/backend/api-service:latest
+        image: 687436499847.dkr.ecr.ap-northeast-2.amazonaws.com/backend/api-service:b3762b3ca99b0bcc94702765eeb3ac62f8275945
         ports:
         - containerPort: 5200
         env:
