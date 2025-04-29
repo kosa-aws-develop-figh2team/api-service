@@ -52,5 +52,18 @@ jobs:
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          echo "📝 k8s deployment.yml 파일에서 이미지 태그 업데이트"
-          sed -i "s#${ECR_REGISTRY}/${ECR_REPOSITORY}:[^[:space:]]*#${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}#g" ./k8s/deployment.yml
+          echo "🕵️ 현재 deployment.yml 파일 내용 보기"
+          cat ./k8s/deployment.yml
+
+          echo "🛠️ 사용할 ECR_REGISTRY=$ECR_REGISTRY"
+          echo "🛠️ 사용할 ECR_REPOSITORY=$ECR_REPOSITORY"
+          echo "🛠️ 사용할 IMAGE_TAG=$IMAGE_TAG"
+
+          echo "📝 실행할 sed 명령어:"
+          echo "sed -i 's#image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:.*#image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}#g' ./k8s/deployment.yml"
+
+          echo "✏️ deployment.yml 이미지 태그 업데이트 시작"
+          sed -i "s#image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:.*#image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}#g" ./k8s/deployment.yml
+
+          echo "✅ 업데이트된 deployment.yml 파일 결과 보기"
+          cat ./k8s/deployment.yml
