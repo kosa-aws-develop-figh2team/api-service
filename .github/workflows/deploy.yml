@@ -45,3 +45,12 @@ jobs:
           echo "🚀 ECR로 push 시작"
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: ✏️ Update deployment.yml image tag
+        env:
+          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          echo "📝 k8s deployment.yml 파일에서 이미지 태그 업데이트"
+          sed -i "s#${ECR_REGISTRY}/${ECR_REPOSITORY}:[^[:space:]]*#${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}#g" ./k8s/deployment.yml
